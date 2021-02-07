@@ -9,6 +9,7 @@ import ClassMetier.Bouteille;
 import ClassMetier.Cepage;
 import ClassMetier.Couleur;
 import ClassMetier.Vin;
+import static java.lang.Integer.toString;
 import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -95,6 +96,11 @@ public class frmPrincipal extends javax.swing.JFrame {
                 "Numéro", "Vin", "Quantité"
             }
         ));
+        tblBout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblBoutMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblBout);
 
         jLabel3.setText("Millésime");
@@ -321,26 +327,43 @@ public class frmPrincipal extends javax.swing.JFrame {
             dtmBouteilles.addRow(v);
             valeur = valeur + (bou.getQuantiteBouteille()*bou.getLeVin().getPrixDuVin());
              
-            if(("Blanc").equals(bou.getLeVin().getLaCouleur().getNomCouleur())){
+            if(("Rouge").equals(bou.getLeVin().getLaCouleur().getNomCouleur())){
                 numberOfRed++;
             }
             if(bou.getLeVin().getLaCouleur().getNomCouleur().compareTo("Blanc")==0){
                 numberOfWhite++;
             }
-            if(bou.getLeVin().getLaCouleur().getNomCouleur().compareTo("Rosé")==0){
+            if(("Rosé").equals(bou.getLeVin().getLaCouleur().getNomCouleur())){
                 numberOfRose++;
                 
             }
         }
+        
+        System.out.println(numberOfRed);
+        System.out.println(mesBouteilles.size());
         int totalBouteuille = numberOfRed + numberOfRose + numberOfWhite; 
         txtValeur.setText(String.valueOf(valeur)+ "euros");
-        txtPercentRouge.setText(String.valueOf((double)(numberOfRed/mesBouteilles.size())*100)+"%");
-        txtPercentBlanc.setText(String.valueOf((numberOfWhite/totalBouteuille)*100)+"%");
-        txtPercentRose.setText(String.valueOf((numberOfRose/totalBouteuille)*100) +"%");
+        txtPercentRouge.setText(String.valueOf(((double)numberOfRed/mesBouteilles.size())*100)+"%");
+        txtPercentBlanc.setText(String.valueOf(((double)numberOfWhite/mesBouteilles.size())*100)+"%");
+        txtPercentRose.setText(String.valueOf(((double)numberOfRose/mesBouteilles.size())*100)+"%");
         
         
         
     }//GEN-LAST:event_formWindowOpened
+
+    private void tblBoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBoutMouseClicked
+        int selectedBou;
+        // txt 다 비우기 
+        selectedBou =Integer.parseInt(tblBout.getValueAt(tblBout.getSelectedRow(), 0).toString());
+        for(Bouteille bou : mesBouteilles){
+            if(selectedBou == bou.getIdBouteille()){
+                txtMill.setText(String.valueOf(bou.getLeVin().getMillesimeVin())); 
+                txtPrix.setText(String.valueOf(bou.getLeVin().getPrixDuVin()));
+                txtCepage.setText(String.valueOf(bou.getLeVin().getLeCepage().getNomCepage()));
+                txtCouleur.setText(String.valueOf(bou.getLeVin().getLaCouleur().getNomCouleur()));
+            }
+        }
+    }//GEN-LAST:event_tblBoutMouseClicked
 
     /**
      * @param args the command line arguments
